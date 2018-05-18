@@ -3,5 +3,10 @@
         <file>main.qml</file>
         <file>image.png</file>
         <file>Components.qml</file>
+        <file>qtquickcontrols2.conf</file>
+        <file>SettingLabel.qml</file>
+        <file>SettingSlider.qml</file>
+        <file>SettingColorDialog.qml</file>
+        <file>SettingCheckBox.qml</file>
     </qresource>
 </RCC>

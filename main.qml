@@ -7,8 +7,9 @@ import QtGraphicalEffects 1.0
 Window {
     id: window
     visible: true
-    width: 800
+    width: 900
     height: 600
+    color: "black"
     title: qsTr("Hello World")
 
     Components {
@@ -70,8 +71,7 @@ Window {
                             name: name,
                             source: imageItem.children[imageItem.children.length - 1]
                         }
-                        components.effectComponents[index].createObject(
-                                    imageItem, properties)
+                        components.effectComponents[index].createObject(imageItem, properties)
                     }
                 }
             }
@@ -89,6 +89,16 @@ Window {
                 fillMode: Image.PreserveAspectFit
                 source: "image.png"
             }
+
+            function visibleEffect(beforeIndex) {
+                for (var i=beforeIndex-1; i>0; i--) {
+                    if (children[i].visible) {
+                        return children[i];
+                    }
+                }
+
+                return image;
+            }
         }
 
         Item {
@@ -103,42 +113,22 @@ Window {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
-                    spacing: 15
+                    spacing: 5
                     model: imageItem.children
                     delegate: RadioDelegate {
                         id: delegateRoot
                         property var item: null
 
-                        visible: nameLabel.text !== ""
+                        visible: text !== ""
                         width: ListView.view.width
-                        height: rowLayout.implicitHeight
+
+                        text: imageItem.children[index].name ? imageItem.children[index].name : ""
 
                         Binding {
                             target: appliedEffectsList
                             property: "currentIndex"
                             value: index
                             when: delegateRoot.checked
-                        }
-
-                        ColumnLayout {
-                            id: rowLayout
-                            anchors {
-                                left: parent.left
-                                right: parent.right
-                            }
-
-                            Label {
-                                id: nameLabel
-
-                                verticalAlignment: Text.AlignVCenter
-                                text: imageItem.children[index].name ? imageItem.children[index].name : ""
-                            }
-
-                            Rectangle {
-                                Layout.fillWidth: true
-                                Layout.preferredHeight: 1
-                                color: "black"
-                            }
                         }
 
                         Behavior on height {
