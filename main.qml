@@ -69,7 +69,7 @@ Window {
                     onClicked: {
                         var properties = {
                             name: name,
-                            source: imageItem.children[imageItem.children.length - 1]
+                            prevEffect: imageItem.children[imageItem.children.length - 1]
                         }
                         components.effectComponents[index].createObject(imageItem, properties)
                     }
@@ -84,6 +84,7 @@ Window {
 
             Image {
                 id: image
+                property string name: "Image"
                 anchors.fill: parent
 
                 fillMode: Image.PreserveAspectFit
@@ -107,6 +108,7 @@ Window {
 
             ColumnLayout {
                 anchors.fill: parent
+                anchors.margins: 10
 
                 ListView {
                     id: appliedEffectsList
@@ -119,10 +121,10 @@ Window {
                         id: delegateRoot
                         property var item: null
 
-                        visible: text !== ""
+                        visible: text !== "Image"
                         width: ListView.view.width
 
-                        text: imageItem.children[index].name ? imageItem.children[index].name : ""
+                        text: imageItem.children[index].name ? imageItem.children[index].name  : ""
 
                         Binding {
                             target: appliedEffectsList
@@ -137,6 +139,9 @@ Window {
                                 easing.type: Easing.OutQuint
                             }
                         }
+
+                        ToolTip.text: "Source: " + imageItem.children[index].source.name
+                        ToolTip.visible: hovered
                     }
                 }
 
@@ -147,6 +152,8 @@ Window {
                 }
 
                 Loader {
+                    Layout.fillWidth: true
+                    Layout.maximumWidth: parent.width
                     sourceComponent: imageItem.children[appliedEffectsList.currentIndex].settings
                 }
 

@@ -66,11 +66,11 @@ Item {
         BrightnessContrast {
             id: effect
             property string name
+            property var prevEffect
             property var settingsDesc: (["visible,bool", "opacity,real", "brightness,real", "contrast,real"])
             property var settings: Component {
                 GridLayout {
                     id: grid
-                    Layout.fillWidth: true
                     columns: 2
 
                     Component.onCompleted: setupControls(effect, grid)
@@ -78,7 +78,7 @@ Item {
             }
 
             anchors.fill: image
-            source: image
+            source: prevEffect.visible ? prevEffect : prevEffect.source
         }
     }
 
@@ -88,11 +88,11 @@ Item {
         ColorOverlay {
             id: effect
             property string name
+            property var prevEffect
             property var settingsDesc: (["visible,bool", "opacity,real", "color,color"])
             property var settings: Component {
                 GridLayout {
                     id: grid
-                    Layout.fillWidth: true
                     columns: 2
 
                     Component.onCompleted: setupControls(effect, grid)
@@ -100,7 +100,7 @@ Item {
             }
 
             anchors.fill: image
-            source: image
+            source: prevEffect.visible ? prevEffect : prevEffect.source
             color: "red"
             opacity: 0.1
         }
@@ -112,6 +112,7 @@ Item {
         Colorize {
             id: effect
             property string name
+            property var prevEffect
             property var settingsDesc: (["visible,bool", "opacity,real", "hue,real", "saturation,real", "lightness,real"])
             property var settings: Component {
                 GridLayout {
@@ -124,7 +125,7 @@ Item {
             }
 
             anchors.fill: image
-            source: image
+            source: prevEffect.visible ? prevEffect : prevEffect.source
             hue: 0.0
             saturation: 0.5
             lightness: -0.2
@@ -137,6 +138,7 @@ Item {
         Desaturate {
             id: effect
             property string name
+            property var prevEffect
             property var settingsDesc: (["visible,bool", "opacity,real", "desaturation,real"])
             property var settings: Component {
                 GridLayout {
@@ -149,7 +151,7 @@ Item {
             }
 
             anchors.fill: image
-            source: image
+            source: prevEffect.visible ? prevEffect : prevEffect.source
             desaturation: 0.8
         }
     }
@@ -160,6 +162,7 @@ Item {
         GammaAdjust {
             id: effect
             property string name
+            property var prevEffect
             property var settingsDesc: (["visible,bool", "opacity,real", "gamma,real"])
             property var settings: Component {
                 GridLayout {
@@ -172,7 +175,7 @@ Item {
             }
 
             anchors.fill: image
-            source: image
+            source: prevEffect.visible ? prevEffect : prevEffect.source
             gamma: 1.0
         }
     }
@@ -183,6 +186,7 @@ Item {
         HueSaturation {
             id: effect
             property string name
+            property var prevEffect
             property var settingsDesc: (["visible,bool", "opacity,real", "hue,real", "saturation,real", "lightness,real"])
             property var settings: Component {
                 GridLayout {
@@ -195,7 +199,7 @@ Item {
             }
 
             anchors.fill: image
-            source: image
+            source: prevEffect.visible ? prevEffect : prevEffect.source
             hue: -0.3
             saturation: 0.5
             lightness: -0.1
@@ -208,6 +212,7 @@ Item {
         LevelAdjust {
             id: effect
             property string name
+            property var prevEffect
             property var settingsDesc: (["visible,bool", "opacity,real", "minimumInput,color", "minimumOutput,color", "maximumInput,color", "maximumOutput,color"])
             property var settings: Component {
                 GridLayout {
@@ -220,7 +225,7 @@ Item {
             }
 
             anchors.fill: image
-            source: image
+            source: prevEffect.visible ? prevEffect : prevEffect.source
             minimumOutput: "#00ffffff"
             maximumOutput: "#ff000000"
         }

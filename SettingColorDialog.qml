@@ -1,12 +1,14 @@
 import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Dialogs 1.2
+import QtQuick.Layouts 1.3
 
 Button {
     id: root
     property alias property: binding.property
     property alias effect: binding.target
     property alias color: dialog.color
+
     text: "Choose Color"
 
     ColorDialog {
