@@ -9,7 +9,8 @@ Button {
     property alias effect: binding.target
     property alias color: dialog.color
 
-    text: "Choose Color"
+    Layout.fillWidth: true
+    text: "Choose Color    "
 
     ColorDialog {
         id: dialog
@@ -24,7 +25,8 @@ Button {
         anchors {
             top: parent.top
             bottom: parent.bottom
-            left: parent.right
+            right: parent.right
+            margins: 2
         }
         width: height
         color: dialog.color

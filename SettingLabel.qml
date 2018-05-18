@@ -4,4 +4,5 @@ import QtQuick.Layouts 1.3
 
 Label {
     Layout.fillWidth: true
+    fontSizeMode: Text.Fit
 }

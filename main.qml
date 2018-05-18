@@ -1,61 +1,51 @@
 import QtQuick 2.10
 import QtQuick.Controls 2.2
+import QtQuick.Controls.Universal 2.2
 import QtQuick.Layouts 1.3
 import QtQuick.Window 2.10
 import QtGraphicalEffects 1.0
+import QtQuick.Dialogs 1.2
 
 Window {
     id: window
     visible: true
-    width: 900
-    height: 600
+    width: 1000
+    height: 700
     color: "black"
-    title: qsTr("Hello World")
+    title: qsTr("Qt Graphical Effects Playground")
 
     Components {
         id: components
     }
 
-    ListModel {
+    EffectNamesModel {
         id: effectsModel
-
-        ListElement {
-            name: "BrightnessContrast"
-        }
-        ListElement {
-            name: "ColorOverlay"
-        }
-        ListElement {
-            name: "Colorize"
-        }
-        ListElement {
-            name: "Desaturate"
-        }
-        ListElement {
-            name: "GammaAdjust"
-        }
-        ListElement {
-            name: "HueSaturation"
-        }
-        ListElement {
-            name: "LevelAdjust"
-        }
     }
 
     RowLayout {
         anchors.fill: parent
 
         Item {
-            Layout.preferredWidth: parent.width * 0.3
+            Layout.preferredWidth: parent.width * 0.2
             Layout.fillHeight: true
 
             ListView {
                 anchors.fill: parent
+                anchors.margins: 10
+
+                spacing: 5
+                interactive: false
+                header: Label {
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    font.capitalization: Font.AllUppercase
+                    text: "Effects"
+                }
 
                 model: effectsModel
                 delegate: ItemDelegate {
                     width: ListView.view.width
-                    height: 32
+                    height: 40
 
                     Label {
                         anchors.fill: parent
@@ -75,6 +65,13 @@ Window {
                     }
                 }
             }
+        }
+
+        Rectangle {
+            Layout.fillHeight: true
+            Layout.preferredWidth: 1
+            opacity: 0.2
+            color: Universal.foreground
         }
 
         Item {
@@ -102,6 +99,13 @@ Window {
             }
         }
 
+        Rectangle {
+            Layout.fillHeight: true
+            Layout.preferredWidth: 1
+            opacity: 0.2
+            color: Universal.foreground
+        }
+
         Item {
             Layout.preferredWidth: parent.width * 0.3
             Layout.fillHeight: true
@@ -115,15 +119,22 @@ Window {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
 
+                    clip: true
                     spacing: 5
+                    header: Label {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        font.capitalization: Font.AllUppercase
+                        text: "Applied"
+                    }
+                    headerPositioning: ListView.PullBackHeader
+
                     model: imageItem.children
                     delegate: RadioDelegate {
                         id: delegateRoot
                         property var item: null
 
-                        visible: text !== "Image"
                         width: ListView.view.width
-
+                        enabled: index > 0
                         text: imageItem.children[index].name ? imageItem.children[index].name  : ""
 
                         Binding {
@@ -143,37 +154,43 @@ Window {
                         ToolTip.text: "Source: " + imageItem.children[index].source.name
                         ToolTip.visible: hovered
                     }
+
+                    ScrollBar.vertical: ScrollBar {}
                 }
 
                 Rectangle {
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 2
-                    color: "black"
+                    Layout.preferredHeight: 1
+                    color: Universal.foreground
+                    opacity: 0.2
+                    visible: settingsLoader.status === Loader.Ready
                 }
 
                 Loader {
+                    id: settingsLoader
                     Layout.fillWidth: true
                     Layout.maximumWidth: parent.width
                     sourceComponent: imageItem.children[appliedEffectsList.currentIndex].settings
                 }
-
-                //                        Slider {
-                //                            id: slider
-
-                //                            Binding {
-                //                                target: imageItem.children[appliedEffectsList.currentIndex]
-                //                                property: imageItem.children[appliedEffectsList.currentIndex].properties[index]
-                //                                value: slider.value
-                //                                when: slider.pressed
-                //                            }
-                //                            Binding {
-                //                                target: slider
-                //                                property: "value"
-                //                                value: imageItem.children[appliedEffectsList.currentIndex][imageItem.children[appliedEffectsList.currentIndex].properties[index]]
-                //                                when: !slider.pressed
-                //                            }
-                //                        }
             }
         }
+    }
+
+    Button {
+       anchors {
+           bottom: parent.bottom
+           horizontalCenter: parent.horizontalCenter
+           margins: 5
+       }
+
+       text: "Open"
+       onClicked: fileDialog.open()
+
+       FileDialog {
+           id: fileDialog
+
+           folder: shortcuts.pictures
+           onAccepted: image.source = fileUrl
+       }
     }
 }

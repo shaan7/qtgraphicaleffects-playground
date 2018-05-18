@@ -8,5 +8,6 @@
         <file>SettingSlider.qml</file>
         <file>SettingColorDialog.qml</file>
         <file>SettingCheckBox.qml</file>
+        <file>EffectNamesModel.qml</file>
     </qresource>
 </RCC>
