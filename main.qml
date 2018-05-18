@@ -6,7 +6,7 @@ import QtQuick.Window 2.10
 import QtGraphicalEffects 1.0
 import QtQuick.Dialogs 1.2
 
-Window {
+ApplicationWindow {
     id: window
     visible: true
     width: 1000
@@ -176,21 +176,64 @@ Window {
         }
     }
 
-    Button {
-       anchors {
-           bottom: parent.bottom
-           horizontalCenter: parent.horizontalCenter
-           margins: 5
-       }
+    TextArea {
+        id: codeTextArea
+        visible: false
+        readOnly: true
 
-       text: "Open"
-       onClicked: fileDialog.open()
+        function populate() {
+            var code = "";
+            for (var i = 1; i < imageItem.children.length; i++) {
+                code += imageItem.children[i].name + " { ";
+                for (var j in imageItem.children[i].settingsDesc) {
+                    var name = imageItem.children[i].settingsDesc[j].split(",")[0];
+                    code += name + ": " + imageItem.children[i][name] + "; "
+                }
+                code += " }\n";
+            }
 
-       FileDialog {
-           id: fileDialog
+            text = code;
+        }
+    }
 
-           folder: shortcuts.pictures
-           onAccepted: image.source = fileUrl
-       }
+    footer: Item {
+        height: rowLayout.implicitHeight*1.2
+
+        RowLayout {
+            id: rowLayout
+            anchors.centerIn: parent
+
+            Button {
+                Layout.fillHeight: true
+                text: "Open"
+                onClicked: fileDialog.open()
+
+                FileDialog {
+                    id: fileDialog
+
+                    folder: shortcuts.pictures
+                    onAccepted: image.source = fileUrl
+                }
+            }
+            Button {
+                Layout.fillHeight: true
+                text: "Copy Code"
+                onClicked: {
+                    codeTextArea.populate();
+                    codeTextArea.selectAll();
+                    codeTextArea.copy();
+                }
+            }
+        }
+
+        Rectangle {
+            anchors {
+                left: parent.left; right: parent.right
+                top: parent.top
+            }
+            height: 1
+            color: Universal.foreground
+            opacity: 0.2
+        }
     }
 }
